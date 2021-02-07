@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+    <title>The Stig</title>
+    <meta http-equiv="author" name="author" content="mbirth" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var docid = '1U2FNJSreXx_ybZcj-_1_j-is_6tiS9P85e-0zoVQaWc';
+        // var csvurl = 'https://docs.google.com/spreadsheets/d/'+docid+'/export?format=csv';
+        // var csvurl = 'https://spreadsheets.google.com/feeds/list/'+docid+'/od6/public/values?alt=json-in-script';
+        var csvurl = 'https://spreadsheets.google.com/feeds/list/'+docid+'/od6/public/values?alt=json';
+        // var csvurl = 'https://spreadsheets.google.com/feeds/list/'+docid+'/od6/public/basic?alt=json-in-script';
+
+        function init()
+        {
+            $.get(csvurl, function(data) {
+                window.data = data;
+                window.len = data.feed.entry.length;
+                window.author = data.feed.author[0].name;
+                $('#content').html(len + ' entries.<br />');
+                shuffle();
+            });
+        }
+
+        function shuffle()
+        {
+            var i = Math.floor( Math.random() * len );
+            var entry = data.feed.entry[i];
+            $('#somesay').html(entry.gsx$start.$t);
+            $('#firstfact').html(entry.gsx$stfact.$t);
+            $('#and').html(entry.gsx$andthat.$t);
+            $('#secondfact').html(entry.gsx$ndfact.$t);
+            $('#ellipsis').html(entry.gsx$ellipsis.$t);
+            $('#allweknow').html(entry.gsx$intro.$t);
+            getColour();
+        }
+
+        function getColour()
+        {
+            var r = Math.floor( Math.random() * 256 );
+            var g = Math.floor( Math.random() * 256 );
+            var b = Math.floor( Math.random() * 256 );
+            // console.log('Setting colour to: %o - %o - %o', r, g, b);
+            $('body').css('background-color', 'rgb('+r+', '+g+', '+b+')');
+        }
+
+        $(document).ready(function() {
+            init();
+        });
+    </script>
+    <style type="text/css">
+        body {
+            background-color: #ccc;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        #stig {
+
+        }
+
+        #somesay {
+            font-size: 4em;
+            font-weight: bold;
+        }
+
+        #facts {
+            font-size: 2em;
+            padding-top: 1em;
+            padding-bottom: 1em;
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+
+        #facts div {
+            display: inline;
+        }
+
+        #allweknow {
+            font-size: 1.5em;
+            font-style: italic;
+        }
+
+        #more {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+
+        #more a {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div id="stig">
+    <div id="logo">
+        <img src="helmet.png" />
+    </div>
+    <div id="intro">
+        <div id="somesay"></div>
+        <div id="facts">
+            <div id="firstfact"></div><div id="and"></div>
+            <div id="secondfact"></div><div id="ellipsis"></div>
+        </div>
+        <div id="allweknow"></div>
+    </div>
+</div>
+<div id="more">
+    <button onclick="shuffle();">Give me another one!</button><br />
+    <a href="https://docs.google.com/spreadsheets/d/1U2FNJSreXx_ybZcj-_1_j-is_6tiS9P85e-0zoVQaWc/edit?usp=sharing">Add more introductions</a>
+</div>
+</body>
+</html>
